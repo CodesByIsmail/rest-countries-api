@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rest Countries API</title>
+    <script src="script.js" defer></script>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.2.0/css/line.css"
+    />
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav__bar container">
+        <h3 class="logo">Where in the world?</h3>
+
+        <div class="toggler">
+          <i class="uil uil-moon"></i>
+          <p>Dark mode</p>
+        </div>
+      </div>
+    </nav>
+
+    <section class="home__view">
+      <div class="navigator container">
+        <div class="search__div">
+          <i class="uil uil-search"></i>
+          <input
+            type="text"
+            placeholder="Search for country..."
+            class="search__input"
+            id="search__input"
+          />
+        </div>
+
+        <div class="filter__region">
+          <h3>Filter By Region <i class="uil uil-angle-down"></i></h3>
+
+          <ul class="filter__wrapper hidden">
+            <li class="filter__list" data-value="Africa">Africa</li>
+            <li class="filter__list" data-value="Americas">America</li>
+            <li class="filter__list" data-value="Asia">Asia</li>
+            <li class="filter__list" data-value="Europe">Europe</li>
+            <li class="filter__list" data-value="Oceania">Oceania</li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="countries container">
+        <p class="error__text hidden">No Country found!</p>
+        <!--   <div class="country">
+    <img src="" alt="" />
+    
+    <div class="country__info">
+            <h2>Germany</h2>
+    
+    <h3>Population: <span class="population">2million</span></h3>
+    <h3>Region: <span class="region">Europe</span></h3>
+    <h3>Capital: <span class="capital">Berlin</span></h3>
+  
+    </div>
+  </div> -->
+      </section>
+    </section>
+
+    <section class="detail__view container">
+      <button class="detail__btn">
+        <i class="uil uil-arrow-left"></i> Back
+      </button>
+
+      <div class="details">
+        <!-- <img class="country__flag__detail" src="" alt="" /> -->
+        <!-- 
+        <div class="country__detail">
+          <h3>Belgium</h3>
+
+          <div class="infos">
+            <div class="basic__info">
+              <p>Native Name: <span>Belgie</span></p>
+              <p>Population : <span>1,131,959</span></p>
+              <p>Region: <span>Belgie</span></p>
+              <p>Sub Region: <span>Belgie</span></p>
+              <p>Capital: <span>Belgie</span></p>
+            </div>
+
+            <div class="more__info">
+              <p>Top Level Domain: <span>.be</span></p>
+              <p>Currencies: <span>Euro</span></p>
+              <p>Languages: <span>Dutch, French, German</span></p>
+            </div>
+          </div>
+
+          <div class="borders">
+            <h4 class="tittle">Border Countries:</h4>
+            <div class="borders__name">
+              <span>France</span>
+              <span>Germany</span>
+              <span>Luxembourg</span>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </section>
+  </body>
+</html>
