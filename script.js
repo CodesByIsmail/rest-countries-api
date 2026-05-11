@@ -136,20 +136,26 @@ function renderDetails(country) {
         `;
   countryDetails.innerHTML = html;
 
-  if (!country.borders) return;
+  const bordersDiv = countryDetails.querySelector(".borders__name");
+
+  if (!country.borders) {
+    const borderHtml = `<p class='no__border'>Has no border countries</p>`;
+    console.log("no border");
+    bordersDiv.innerHTML += borderHtml;
+    return;
+  }
   const borders = [...country.borders];
 
-  const bordersDiv = countryDetails.querySelector(".borders__name");
   borders.forEach((b) => {
     fetch(`https://restcountries.com/v2/alpha/${b}`)
       .then((res) => res.json())
       .then((data) => {
-        const borderHtml = ` <span class="border__country" data-name="${data.name}">${data.name}</span> `;
+        let borderHtml = ` <span class="border__country" data-name="${data.name}">${data.name}</span> `;
+
         bordersDiv.innerHTML += borderHtml;
       });
   });
 }
-
 
 countryDetails.addEventListener("click", (e) => {
   const countryToShowEl = e.target.closest(".border__country");
