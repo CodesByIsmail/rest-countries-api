@@ -1,21 +1,20 @@
+import { getAllCountries, state } from "./model.js";
+
 const countriesContainer = document.querySelector(".countries");
 const filterContainer = document.querySelector(".filter__region");
 const filterListWrapper = document.querySelector(".filter__wrapper");
 const searchInput = document.querySelector(".search__input");
 
-let allCountriesData = [];
+// let allCountriesData = [];
 
-async function getAllCountry() {
-  const res = await fetch("./data.json");
-  const data = await res.json();
-
-  allCountriesData = data;
-
-  console.log(allCountriesData);
-  addCountries(allCountriesData);
+async function controlCountries() {
+  const data = await getAllCountries();
+  state.allCountriesData = data;
+  console.log(state.allCountriesData);
+  addCountries(state.allCountriesData);
 }
 
-getAllCountry();
+controlCountries();
 
 function addCountries(countryArr) {
   countriesContainer.innerHTML = "";
@@ -24,11 +23,11 @@ function addCountries(countryArr) {
 
 function render(country) {
   const html = `
-    <div class="country" data-name='${country.name}'>
-      <img src="${country.flag}" alt="${country.name}'s flag" />
+    <div class="country" data-name='${country.name.official}'>
+      <img src="${country.flags.png}" alt="${country.flags.alt}'s flag" />
       
       <div class="country__info">
-              <h2>${country.name}</h2>
+              <h2>${country.name.official}</h2>
       
       <h3>Population: <span class="population">${new Intl.NumberFormat().format(country.population)}</span></h3>
       <h3>Region: <span class="region">${country.region}</span></h3>
@@ -51,15 +50,15 @@ filterContainer.addEventListener("click", (e) => {
 });
 
 function getCountryByFilter(region) {
-  const countriesInRegion = allCountriesData.filter(
+  const countriesInRegion = state.allCountriesData.filter(
     (country) => country.region === region,
   );
   return countriesInRegion;
 }
 
 function getCountriesBySearch(textInput) {
-  const countriesBySearch = allCountriesData.filter((country) =>
-    country.name.toLowerCase().includes(textInput),
+  const countriesBySearch = state.allCountriesData.filter((country) =>
+    country.name.official.toLowerCase().includes(textInput),
   );
   return countriesBySearch;
 }
@@ -89,9 +88,11 @@ countriesContainer.addEventListener("click", (e) => {
   homeView.classList.add("hidden");
   detailView.style.display = "flex";
 
-  const countryToShow = allCountriesData.find(
-    (c) => c.name === countryToShowName,
+  const countryToShow = state.allCountriesData.find(
+    (c) => c.name.official === countryToShowName,
   );
+
+  console.log(countryToShow);
 
   renderDetails(countryToShow);
 });
@@ -99,19 +100,17 @@ countriesContainer.addEventListener("click", (e) => {
 const countryDetails = document.querySelector(".details");
 
 function renderDetails(country) {
-  const languages = [...country.languages.map((l) => l.name)];
-  const currencies = [...country.currencies.map((c) => c.code)];
-  // console.log(typeof(borders))
+
 
   const html = `
-  <img class="country__flag__detail" src="${country.flag}" alt="" />
+  <img class="country__flag__detail" src="${country.flags.png}" alt="${country.flags.alt}" />
 
         <div class="country__detail">
-          <h3>${country.name}</h3>
+          <h3>${country.name.official}</h3>
 
           <div class="infos">
             <div class="basic__info">
-              <p>Native Name: <span>${country.nativeName}</span></p>
+              <p>Native Name: <span>${Object.values(country.name.nativeName)[0].official}</span></p>
               <p>Population : <span>${new Intl.NumberFormat().format(country.population)}</span></p>
               <p>Region: <span>${country.region}</span></p>
               <p>Sub Region: <span>${country.subregion}</span></p>
@@ -120,8 +119,8 @@ function renderDetails(country) {
 
             <div class="more__info">
               <p>Top Level Domain: <span>${country.topLevelDomain}</span></p>
-              <p>Currencies: <span>${currencies}</span></p>
-              <p>Languages: <span>${languages}</span></p>
+              <p>Currencies: <span>${Object.keys(country.currencies).join(',')}</span></p>
+              <p>Languages: <span>${Object.values(country.languages).join(", ")}</span></p>
             </div>
           </div>
 
@@ -162,9 +161,10 @@ countryDetails.addEventListener("click", (e) => {
   if (!countryToShowEl) return;
   const countryToShowName = countryToShowEl.dataset.name;
 
-  const countryToShow = allCountriesData.find(
-    (c) => c.name === countryToShowName,
+  const countryToShow = state.allCountriesData.find(
+    (c) => c.name.official === countryToShowName,
   );
+  console.log(countryToShow);
 
   renderDetails(countryToShow);
 });

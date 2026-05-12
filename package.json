@@ -1,0 +1,22 @@
+{
+  "name": "Rest-countries-api-main",
+  "version": "1.0.0",
+  "description": "This is a solution to a challenge on Frontend Mentor",
+  "homepage": "https://github.com/CodesByIsmail/rest-countries-api#readme",
+  "bugs": {
+    "url": "https://github.com/CodesByIsmail/rest-countries-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodesByIsmail/rest-countries-api.git"
+  },
+  "license": "ISC",
+  "author": "CodesByIsmail",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}
