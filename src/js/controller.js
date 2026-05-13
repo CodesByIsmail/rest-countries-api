@@ -1,4 +1,6 @@
 import { getAllCountries, state } from "./model.js";
+import countriesView from "./views/countriesView.js";
+import { addCountries } from "./helper.js";
 
 const countriesContainer = document.querySelector(".countries");
 const filterContainer = document.querySelector(".filter__region");
@@ -11,33 +13,13 @@ async function controlCountries() {
   const data = await getAllCountries();
   state.allCountriesData = data;
   console.log(state.allCountriesData);
-  addCountries(state.allCountriesData);
+  addCountries(state.allCountriesData, countriesView.renderCountries); //takes the data of
+  // countries to add and also the view to add it to
 }
 
 controlCountries();
 
-function addCountries(countryArr) {
-  countriesContainer.innerHTML = "";
-  countryArr.forEach((c) => render(c));
-}
-
-function render(country) {
-  const html = `
-    <div class="country" data-name='${country.name.official}'>
-      <img src="${country.flags.png}" alt="${country.flags.alt}'s flag" />
-      
-      <div class="country__info">
-              <h2>${country.name.official}</h2>
-      
-      <h3>Population: <span class="population">${new Intl.NumberFormat().format(country.population)}</span></h3>
-      <h3>Region: <span class="region">${country.region}</span></h3>
-      <h3>Capital: <span class="capital">${country.capital}</span></h3>
-
-      </div>
-    </div>`;
-  // countriesContainer.prepend(html)
-  countriesContainer.insertAdjacentHTML("beforeend", html);
-}
+async function controlFilterCountries() {}
 
 filterContainer.addEventListener("click", (e) => {
   filterListWrapper.classList.toggle("hidden");
@@ -100,8 +82,6 @@ countriesContainer.addEventListener("click", (e) => {
 const countryDetails = document.querySelector(".details");
 
 function renderDetails(country) {
-
-
   const html = `
   <img class="country__flag__detail" src="${country.flags.png}" alt="${country.flags.alt}" />
 
@@ -119,7 +99,7 @@ function renderDetails(country) {
 
             <div class="more__info">
               <p>Top Level Domain: <span>${country.topLevelDomain}</span></p>
-              <p>Currencies: <span>${Object.keys(country.currencies).join(',')}</span></p>
+              <p>Currencies: <span>${Object.keys(country.currencies).join(",")}</span></p>
               <p>Languages: <span>${Object.values(country.languages).join(", ")}</span></p>
             </div>
           </div>
