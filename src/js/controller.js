@@ -1,6 +1,8 @@
 import { getAllCountries, state } from "./model.js";
 import countriesView from "./views/countriesView.js";
+import countryInfoView from "./views/countryInfoView.js";
 import { addCountries } from "./helper.js";
+import data from "../data.json";
 
 const countriesContainer = document.querySelector(".countries");
 const filterContainer = document.querySelector(".filter__region");
@@ -10,11 +12,15 @@ const searchInput = document.querySelector(".search__input");
 // let allCountriesData = [];
 
 async function controlCountries() {
-  const data = await getAllCountries();
+  // const data = await getAllCountries();
   state.allCountriesData = data;
   console.log(state.allCountriesData);
-  addCountries(state.allCountriesData, countriesView.renderCountries); //takes the data of
-  // countries to add and also the view to add it to
+  // addCountries(state.allCountriesData, countriesView.renderCountries); //takes the data of countries to add and also the view to add it to
+  // countriesView.renderCountries(data)
+  countriesView.clear();
+  state.allCountriesData.forEach((data) => {
+    countriesView.renderCountries(data);
+  });
 }
 
 controlCountries();
@@ -24,11 +30,14 @@ async function controlFilterCountries() {}
 filterContainer.addEventListener("click", (e) => {
   filterListWrapper.classList.toggle("hidden");
   if (!e.target.classList.contains("filter__list")) return;
-  const filter = e.target.dataset.value;
-  console.log(filter);
-  const countries = getCountryByFilter(filter);
-  addCountries(countries);
+  const selectedFilter = e.target.dataset.value;
+  console.log(selectedFilter);
+  const countries = getCountryByFilter(selectedFilter);
   console.log(countries);
+  countriesView.clear();
+  countries.forEach((country) => {
+    countriesView.renderCountries(country);
+  });
 });
 
 function getCountryByFilter(region) {
@@ -71,12 +80,13 @@ countriesContainer.addEventListener("click", (e) => {
   detailView.style.display = "flex";
 
   const countryToShow = state.allCountriesData.find(
-    (c) => c.name.official === countryToShowName,
+    (c) => c.name === countryToShowName
   );
 
   console.log(countryToShow);
+  countryInfoView.showDetails(countryToShow)
 
-  renderDetails(countryToShow);
+  // renderDetails(countryToShow);
 });
 
 const countryDetails = document.querySelector(".details");

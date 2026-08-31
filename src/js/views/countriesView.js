@@ -9,11 +9,11 @@ class CountriesView {
   }
 
   #generateMarkup(data) {
-    return `<div class="country" data-name="${data.name.official}">
+    return `<div class="country" data-name="${data.name}">
       <img src="${data.flags.png}" alt="${data.flags.alt}'s flag" />    
 
       <div class="country__info">
-        <h2>${data.name.official}</h2>
+        <h2>${data.name}</h2>
 
         <h3>
           Population:
@@ -31,9 +31,9 @@ class CountriesView {
     </div>`;
   }
 
-  //   clear(){
-  //     this.#parentEl.innerHTML = ''
-  //   }
+    clear(){
+      this.#parentEl.innerHTML = ''
+    }
 }
 
 export default new CountriesView();
