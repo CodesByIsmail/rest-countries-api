@@ -1,22 +1,27 @@
 import { getAllCountries, state } from "./model.js";
 import countriesView from "./views/countriesView.js";
 import countryInfoView from "./views/countryInfoView.js";
-import { addCountries } from "./helper.js";
+import {
+  addCountries,
+  storeTheme,
+  getTheme,
+  storeThemetTheme,
+  setTheme,
+} from "./helper.js";
+
 import data from "../data.json";
 
 const countriesContainer = document.querySelector(".countries");
 const filterContainer = document.querySelector(".filter__region");
 const filterListWrapper = document.querySelector(".filter__wrapper");
 const searchInput = document.querySelector(".search__input");
+const themeToggler = document.querySelector(".theme__toggler");
 
 // let allCountriesData = [];
 
 async function controlCountries() {
-  // const data = await getAllCountries();
   state.allCountriesData = data;
   console.log(state.allCountriesData);
-  // addCountries(state.allCountriesData, countriesView.renderCountries); //takes the data of countries to add and also the view to add it to
-  // countriesView.renderCountries(data)
   countriesView.clear();
   state.allCountriesData.forEach((data) => {
     countriesView.renderCountries(data);
@@ -80,81 +85,42 @@ countriesContainer.addEventListener("click", (e) => {
   detailView.style.display = "flex";
 
   const countryToShow = state.allCountriesData.find(
-    (c) => c.name === countryToShowName
+    (c) => c.name === countryToShowName,
   );
 
   console.log(countryToShow);
-  countryInfoView.showDetails(countryToShow)
+  countryInfoView.showDetails(countryToShow);
 
   // renderDetails(countryToShow);
 });
 
-const countryDetails = document.querySelector(".details");
+themeToggler.addEventListener("click", (e) => {
+  let theme = state.theme;
 
-function renderDetails(country) {
-  const html = `
-  <img class="country__flag__detail" src="${country.flags.png}" alt="${country.flags.alt}" />
+  state.isDark = !state.isDark;
 
-        <div class="country__detail">
-          <h3>${country.name.official}</h3>
-
-          <div class="infos">
-            <div class="basic__info">
-              <p>Native Name: <span>${Object.values(country.name.nativeName)[0].official}</span></p>
-              <p>Population : <span>${new Intl.NumberFormat().format(country.population)}</span></p>
-              <p>Region: <span>${country.region}</span></p>
-              <p>Sub Region: <span>${country.subregion}</span></p>
-              <p>Capital: <span>${country.capital}</span></p>
-            </div>
-
-            <div class="more__info">
-              <p>Top Level Domain: <span>${country.topLevelDomain}</span></p>
-              <p>Currencies: <span>${Object.keys(country.currencies).join(",")}</span></p>
-              <p>Languages: <span>${Object.values(country.languages).join(", ")}</span></p>
-            </div>
-          </div>
-
-           <div class="borders">
-            <h4 class="tittle">Border Countries:</h4>
-            <div class="borders__name">
-      
-            </div>
-          </div>
-          
-        </div>
-        `;
-  countryDetails.innerHTML = html;
-
-  const bordersDiv = countryDetails.querySelector(".borders__name");
-
-  if (!country.borders) {
-    const borderHtml = `<p class='no__border'>Has no border countries</p>`;
-    console.log("no border");
-    bordersDiv.innerHTML += borderHtml;
-    return;
+  if (state.isDark) {
+    storeTheme("dark");
+    theme = getTheme();
+    setTheme(theme);
+    console.log(getTheme());
+  } else {
+    storeTheme("light");
+    theme = getTheme();
+    setTheme(theme);
+    console.log(getTheme());
   }
-  const borders = [...country.borders];
 
-  borders.forEach((b) => {
-    fetch(`https://restcountries.com/v2/alpha/${b}`)
-      .then((res) => res.json())
-      .then((data) => {
-        let borderHtml = ` <span class="border__country" data-name="${data.name}">${data.name}</span> `;
-
-        bordersDiv.innerHTML += borderHtml;
-      });
-  });
-}
-
-countryDetails.addEventListener("click", (e) => {
-  const countryToShowEl = e.target.closest(".border__country");
-  if (!countryToShowEl) return;
-  const countryToShowName = countryToShowEl.dataset.name;
-
-  const countryToShow = state.allCountriesData.find(
-    (c) => c.name.official === countryToShowName,
-  );
-  console.log(countryToShow);
-
-  renderDetails(countryToShow);
+  e.target.closest("button").innerHTML =
+    `<i class="uil uil-${theme === "dark" ? "sun" : "moon"}"></i>
+          <p>${theme === "dark" ? "Light" : "Dark"} mode</p>`;
 });
+
+window.onload = () =>{
+  state.theme = getTheme()
+  let theme = state.theme
+  setTheme(theme)
+  themeToggler.innerHTML =
+    `<i class="uil uil-${theme === "dark" ? "sun" : "moon"}"></i>
+          <p>${theme === "dark" ? "Light" : "Dark"} mode</p>`;
+}

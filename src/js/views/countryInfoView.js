@@ -11,7 +11,7 @@ class CountryInfoView {
 
     generateMarkup(data){
         return `
-          <img class="country__flag__detail" src="${data.flags.png}" alt="" /> -->
+          <img class="country__flag__detail" src="${data.flags.png}" alt="" />
         <div class="country__detail">
           <h3>${data.name}</h3>
 

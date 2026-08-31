@@ -1,5 +1,7 @@
 export const state = {
   allCountriesData: [],
+  isDark: false,
+  theme: 'light',
 };
 
 export async function getAllCountries() {
