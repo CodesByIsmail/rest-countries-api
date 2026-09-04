@@ -335,6 +335,47 @@ nav {
   }
 }
 
+
+.pagination{
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  width: 10rem;
+  overflow-x: auto;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--color-bg-dark);
+  padding: .7rem;
+  border-radius: 50px;
+
+  button{
+    font-size: .5rem;
+    font-weight: 500;
+    padding: .5rem;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    cursor: pointer;
+  }
+
+  button:active{
+    background: var(--color-bg-light);
+  }
+  .pag__btn.active{
+        background: var(--color-bg-dark);
+        color: var(--color-text-dark);
+
+  }
+}
+
+.pagination::-webkit-scrollbar{
+  /* display: none; */
+}
+
 @media screen and (min-width: 760px) {
   .countries {
     display: grid;

@@ -1,5 +1,9 @@
+
 export const state = {
   allCountriesData: [],
+  data:{
+    resultPerPage: 10
+  },
   isDark: false,
   theme: 'light',
 };

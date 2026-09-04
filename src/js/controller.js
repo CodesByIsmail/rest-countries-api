@@ -8,27 +8,39 @@ import {
   storeThemetTheme,
   setTheme,
 } from "./helper.js";
-
+import { RES_PER_PAGE } from "./config.js";
 import data from "../data.json";
+import paginationView from "./views/paginationView.js";
 
 const countriesContainer = document.querySelector(".countries");
 const filterContainer = document.querySelector(".filter__region");
 const filterListWrapper = document.querySelector(".filter__wrapper");
 const searchInput = document.querySelector(".search__input");
 const themeToggler = document.querySelector(".theme__toggler");
-
+const paginationDiv = document.querySelector('.pagination')
 // let allCountriesData = [];
 
 async function controlCountries() {
   state.allCountriesData = data;
   console.log(state.allCountriesData);
   countriesView.clear();
-  state.allCountriesData.forEach((data) => {
+  // state.allCountriesData.forEach((data) => {
+  //   countriesView.renderCountries(data);
+  // });
+ controlCountriesPerPage(1).forEach((data) => {
     countriesView.renderCountries(data);
   });
 }
 
 controlCountries();
+paginationView.renderPaginators(state.allCountriesData)
+
+function controlCountriesPerPage(page) {
+  const start = (page - 1) * RES_PER_PAGE;
+  const end = page * RES_PER_PAGE;
+
+  return state.allCountriesData.slice(start, end);
+}
 
 async function controlFilterCountries() {}
 
@@ -44,6 +56,19 @@ filterContainer.addEventListener("click", (e) => {
     countriesView.renderCountries(country);
   });
 });
+
+paginationDiv.addEventListener('click', (e)=>{
+  if(!e.target.classList.contains('pag__btn')) return
+  document.querySelectorAll('.pag__btn').forEach((btn)=>{
+    btn.classList.remove('active')
+  })
+  e.target.classList.add('active')
+  const curPage = e.target.dataset.page;
+  countriesView.clear()
+   controlCountriesPerPage(curPage).forEach((data) => {
+    countriesView.renderCountries(data);
+  });
+})
 
 function getCountryByFilter(region) {
   const countriesInRegion = state.allCountriesData.filter(
@@ -117,10 +142,13 @@ themeToggler.addEventListener("click", (e) => {
 });
 
 window.onload = () =>{
-  state.theme = getTheme()
+  state.theme = getTheme();
   let theme = state.theme
   setTheme(theme)
   themeToggler.innerHTML =
     `<i class="uil uil-${theme === "dark" ? "sun" : "moon"}"></i>
           <p>${theme === "dark" ? "Light" : "Dark"} mode</p>`;
+
+
+
 }
